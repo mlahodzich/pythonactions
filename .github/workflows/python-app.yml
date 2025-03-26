@@ -29,7 +29,8 @@ jobs:
     - name: Run Python file
       run: python main.py
     - name: Upload output files as artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: output-files # Name of the artifact displayed in GitHub Actions UI
-        path: output/ # Path to the directory containing the generated files
+        name: output-files
+        path: output/
+        overwrite: true
