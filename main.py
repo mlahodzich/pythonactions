@@ -6,20 +6,18 @@ from faker import Faker
 fake = Faker()
 os.makedirs("output", exist_ok=True)
 
-FIELDS = [
-    ("email", fake.email),
-    ("birthdate", lambda: fake.date_of_birth().isoformat())
-]
+def maybe_null(generator_func):
+    """Return a value from generator_func or None randomly."""
+    return generator_func() if random.choice([True, False]) else None
 
 def generate_user():
-    user = {
-        "id": fake.uuid4(),
-        "name": fake.name(),
-        "address": fake.address()
+    return {
+        "id": maybe_null(fake.uuid4),
+        "name": maybe_null(fake.name),
+        "address": maybe_null(fake.address),
+        "email": maybe_null(fake.email),
+        "birthdate": maybe_null(lambda: fake.date_of_birth().isoformat())
     }
-    for field, func in FIELDS:
-        user[field] = func() if random.choice([True, False]) else None
-    return user
 
 if __name__ == "__main__":
     users = [generate_user() for _ in range(10)]
